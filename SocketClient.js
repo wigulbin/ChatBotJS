@@ -23,14 +23,13 @@ class SocketClient {
       let mess = message.toString();
       console.log(mess);
 
+      this.dataHandler.handlePing(mess);
+
       //Initialize Connection
       if(mess.substring(0,18).trim() == ':tmi.twitch.tv 001'){
-        // this.dataHandler;
         this.dataHandler.capReq();
         callback();
       }
-
-      this.dataHandler.handlePing(this.socket, mess);
 
       let indexOfPriv = mess.indexOf('PRIVMSG')
       if(indexOfPriv !== -1){

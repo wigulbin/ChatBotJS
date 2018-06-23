@@ -7,8 +7,10 @@ class DataHandler{
   }
 
   handlePing(dataString){
-    if(dataString.toString().trim() == 'PING :tmi.twitch.tv')
+    if(dataString.toString().trim() == 'PING :tmi.twitch.tv'){
       this.socket.write("PONG :tmi.twitch.tv\r\n");
+      console.log("Pong");
+    }
   }
 
   capReq(){
