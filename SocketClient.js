@@ -1,65 +1,67 @@
 "use strict"
 const net = require('net');
-const commandHandler = require('./Commands');
 const noticeHandler = require('./Notice');
-const dataHandler = require('./DataHandler');
+const DataHandler = require('./DataHandler');
+
 
 class SocketClient {
-  constructor(host, port, nick, pass){
+  constructor(host, port, nick, pass, commands){
     this.host = host;
     this.port = port;
     this.nick = nick;
     this.pass = pass;
+    this.commands = commands;
 
     this.socket = net.connect({
       host: this.host,
       port: this.port
     });
+    
+    this.dataHandler;
   }
 
-  data(socket, callback){
-    return function(message){
+  data(callback){
+    return (message) => {
       let mess = message.toString();
       console.log(mess);
 
-      dataHandler.handlePing(socket, mess);
-
+      //Initialize Connection
       if(mess.substring(0,18).trim() == ':tmi.twitch.tv 001'){
-        dataHandler.capReq(socket);
+        this.dataHandler = new DataHandler([], this.socket);
+        this.dataHandler.capReq();
         callback();
       }
+
+      this.dataHandler.handlePing(this.socket, mess);
 
       let indexOfPriv = mess.indexOf('PRIVMSG')
       if(indexOfPriv !== -1){
         let fullMessage = mess.substring(indexOfPriv + 'PRIVMSG'.length).trim();
-        dataHandler.processMessage(socket, fullMessage);
+        this.dataHandler.processMessage(fullMessage);
       }
     }
   }
-
   
-  
-  connect(socket, pass, nick){
-    return function(){
-      socket.write("PASS " + pass + "\r\n");
-      socket.write("NICK " + nick + "\r\n");
+  connect(pass, nick){
+    return () => {
+      this.socket.write("PASS " + pass + "\r\n");
+      this.socket.write("NICK " + nick + "\r\n");
 
-      socket.write("JOIN #operese\r\n");
-
+      this.socket.write("JOIN #operese\r\n");
     }
   }
 
-  end(socket){
-    return function(message){
+  end(){
+    return (message) => {
       console.log('DONE');
       console.log(message);
     }
   }
 
   launchConnection(callback){
-    this.socket.on('data', this.data(this.socket, callback))
-          .on('connect', this.connect(this.socket, this.pass, this.nick))
-          .on('end', this.end(this.socket))
+    this.socket.on('data', this.data(callback))
+          .on('connect', this.connect(this.pass, this.nick))
+          .on('end', this.end())
           .on('error', function(e){
             console.log(e);
           });

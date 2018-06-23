@@ -1,4 +1,4 @@
-function handleCommands(socket, command, user){
+let handleCommands = (socket, command, user) => {
   switch(command){
     case 'mods':
     case 'disconnect':
@@ -11,8 +11,5 @@ function handleCommands(socket, command, user){
   
   }
 }
-
-
-
 
 module.exports = handleCommands;
