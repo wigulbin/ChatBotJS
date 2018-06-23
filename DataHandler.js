@@ -14,6 +14,7 @@ class DataHandler{
   capReq(){
     this.socket.write("CAP REQ :twitch.tv/membership\r\n");
     this.socket.write("CAP REQ :twitch.tv/commands\r\n");
+    this.socket.write("CAP REQ :twitch.tv/tags\r\n");
   }
 
   processMessage(fullMessage){

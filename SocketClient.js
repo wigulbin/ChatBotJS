@@ -1,8 +1,6 @@
 "use strict"
 const net = require('net');
-const noticeHandler = require('./Notice');
 const DataHandler = require('./DataHandler');
-
 
 class SocketClient {
   constructor(host, port, nick, pass, commands){
@@ -65,8 +63,6 @@ class SocketClient {
           .on('error', function(e){
             console.log(e);
           });
-
-    
   }
 
   sendMessage(message){
