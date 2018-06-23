@@ -15,7 +15,7 @@ class SocketClient {
       port: this.port
     });
     
-    this.dataHandler;
+    this.dataHandler = new DataHandler([], this.socket);
   }
 
   data(callback){
@@ -25,7 +25,7 @@ class SocketClient {
 
       //Initialize Connection
       if(mess.substring(0,18).trim() == ':tmi.twitch.tv 001'){
-        this.dataHandler = new DataHandler([], this.socket);
+        // this.dataHandler;
         this.dataHandler.capReq();
         callback();
       }
