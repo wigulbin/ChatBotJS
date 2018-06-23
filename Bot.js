@@ -1,8 +1,9 @@
 const SocketClient = require("./SocketClient.js");
+const login = require('./Login');
 
 class Bot {
   constructor(commands){
-    this.client = new SocketClient('irc.chat.twitch.tv', 6667, 'operese', 'oauth:8150zj7gr2uwr1blcrdo3mn3eeh2um', commands);
+    this.client = new SocketClient(login, commands);
     this.commands = commands;
   }
 

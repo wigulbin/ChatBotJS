@@ -3,11 +3,11 @@ const net = require('net');
 const DataHandler = require('./DataHandler');
 
 class SocketClient {
-  constructor(host, port, nick, pass, commands){
-    this.host = host;
-    this.port = port;
-    this.nick = nick;
-    this.pass = pass;
+  constructor(login, commands){
+    this.host = login.host;
+    this.port = login.port;
+    this.nick = login.nick;
+    this.pass = login.pass;
     this.commands = commands;
 
     this.socket = net.connect({
