@@ -1,8 +1,9 @@
 const SocketClient = require("./SocketClient.js");
-const login = require('./Login');
+const login = require('./Login.js');
 
 class Bot {
   constructor(commands){
+    //login holds {nick, pass, host, port} for login, from ./Login
     this.client = new SocketClient(login, commands);
     this.commands = commands;
   }
